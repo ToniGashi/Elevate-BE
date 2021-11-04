@@ -1,0 +1,324 @@
+openapi: 3.0.3
+info:
+  title: GF server
+  description: 'API for GF Service'
+  version: 1.0.0
+servers:
+  - url: '/'
+tags:
+  - name: gf_users
+    description: ARS gf users API
+  - name: gf_startups
+    description: ARS gf startups API
+paths: 
+  /users:
+    get:
+      tags:
+        - gf_users
+      summary: Get user codes
+      operationId: getAllUsers
+      x-eov-operation-handler: controllers/usersController
+      responses:
+        '200':
+          description: The users information
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/array_of_users'
+                  - type: string
+        '403':
+          description: No permissions
+    post:
+      tags:
+        - gf_users
+      summary: Create new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+      operationId: createUsers
+      x-eov-operation-handler: controllers/usersController
+      responses:
+        '200':
+          description: user successfully created.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: USR-11072d3a-59a1-44e1-a4de-72507eca99b8
+        '403':
+          description: No permisssions
+        '405':
+          description: Invalid input
+          content: {}
+  /users/{id}:
+    get:
+      tags:
+        - gf_users
+      summary: Get information about a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: USR-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the user
+      operationId: getUser
+      x-eov-operation-handler: controllers/userController
+      responses:
+        '200':
+          description: The user information
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/user'
+                  - type: string
+        '403':
+          description: No permissions
+    put:
+      tags:
+        - gf_users
+      summary: Update user information
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: USR-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the user
+      requestBody:
+        description: User object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+      operationId: updateUser
+      x-eov-operation-handler: controllers/usersController
+      responses:
+        '204':
+          description: The resource was updated successfully.
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: User not found
+          content: {}
+        '405':
+          description: Validation exception
+          content: {}
+    delete:
+      tags:
+        - gf_users
+      summary: Delete a user
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: USR-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the user
+      operationId: deleteUser
+      x-eov-operation-handler: controllers/usersController
+      responses:
+        '204':
+          description: The user was deleted successfully.
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '403':
+          description: No permissions
+        '404':
+          description: Item not found
+          content: {}
+        '409':
+          description: Item is dependent on a usage and could not be deleted.
+  /startups:
+    get:
+      tags:
+        - gf_startups
+      summary: Get startup codes
+      operationId: getAllStartups
+      x-eov-operation-handler: controllers/startupsController
+      responses:
+        '200':
+          description: The startups information
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/array_of_startups'
+                  - type: string
+        '403':
+          description: No permissions
+    post:
+      tags:
+        - gf_startups
+      summary: Create new startup
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/startup'
+      operationId: createStartups
+      x-eov-operation-handler: controllers/startupsController
+      responses:
+        '200':
+          description: startup successfully created.
+          content:
+            application/json:
+              schema:
+                type: string
+                example: STU-11072d3a-59a1-44e1-a4de-72507eca99b8
+        '403':
+          description: No permisssions
+        '405':
+          description: Invalid input
+          content: {}
+  /startups/{id}:
+    get:
+      tags:
+        - gf_startups
+      summary: Get information about a startup
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: STU-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the startup
+      operationId: getStartup
+      x-eov-operation-handler: controllers/startupController
+      responses:
+        '200':
+          description: The startup information
+          content:
+            application/json:
+              schema:
+                anyOf:
+                  - $ref: '#/components/schemas/startup'
+                  - type: string
+        '403':
+          description: No permissions
+    put:
+      tags:
+        - gf_startups
+      summary: Update startup information
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: STU-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the startup
+      requestBody:
+        description: Startup object that needs to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/startup'
+        required: true
+      operationId: updateStartup
+      x-eov-operation-handler: controllers/startupsController
+      responses:
+        '204':
+          description: The resource was updated successfully.
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '404':
+          description: Startup not found
+          content: {}
+        '405':
+          description: Validation exception
+          content: {}
+    delete:
+      tags:
+        - gf_startups
+      summary: Delete a startup
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+            example: STU-11072d3a-59a1-44e1-a4de-72507eca99b8
+          description: The id of the startup
+      operationId: deleteWorkBillingCode
+      x-eov-operation-handler: controllers/startupsController
+      responses:
+        '204':
+          description: The startup was deleted successfully.
+        '400':
+          description: Invalid ID supplied
+          content: {}
+        '403':
+          description: No permissions
+        '404':
+          description: Item not found
+          content: {}
+        '409':
+          description: Item is dependent on a usage and could not be deleted.
+components:
+  responses:
+    unprocessable:
+      description: Unprocessable entity
+  schemas:
+    user:
+      required:
+        - id
+        - name
+        - email
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          default: ''
+          example: '4'
+        email:
+          type: string
+          default: ''
+          example: 'john@smith.com'
+        name:
+          type: string
+          default: ''
+          example: 'toni'
+    array_of_users:
+      type: array
+      items:
+        $ref: '#/components/schemas/user'
+    startup:
+      required:
+        - id
+        - name
+        - email
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          default: ''
+          example: '4'
+        email:
+          type: string
+          default: ''
+          example: 'john@smith.com'
+        name:
+          type: string
+          default: ''
+          example: 'toni'
+    array_of_startups:
+      type: array
+      items:
+        $ref: '#/components/schemas/startup'
