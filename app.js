@@ -16,6 +16,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
 const userRouter = require('./routes/users')
+const emailRouter = require('./routes/emails')
 
 logger.info('conntecting to ', config.MONGODB_URI)
 
@@ -68,7 +69,8 @@ app.use(middleware.tokenExtractor)
 app.use(middleware.requestLogger)
 
 // Make use of the API Endpoints
-app.use('/api/',userRouter)
+app.use('/api/', userRouter)
+app.use('/api/emails', emailRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
