@@ -1,53 +1,65 @@
-let users = [{id:'1', name: 'John', email: 'john@gmail.com'}];
+const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt')
+// const { request, response } = require('express')
+const User = require('../models/user')
 
 const usersController = {
-        async createUsers(req, res) {
-            const {id, name, email} = req.body;
-            if(name && email){
-                if(users)
-                    users.push({id:id, name: name, email: email});
-                res.status(200).send('Request Complete');
-            }
-            else
-                res.status(400).send('All fields are required.');
-        },
-        
-        async deleteUser(req, res) {
-            let toKeepUsers = users.filter(user => user.id != req.params.id);
-            users=toKeepUsers;
-            res.json(users);
-        },
-        
-        async getAllUsers(req, res) {
-            res.json({ok: true, userList: users});
-        },
-        
-        async getUser(req, res) {
-            const userToGet = req.params;
-            const requestedUser = users.filter(user => user.id == userToGet.id)
-            res.json(requestedUser);
-        },
-        
-        async updateUser(req, res) {
-            let arr = users.filter(user => {
-                const newU = req.body;
-                if(user.id == req.params.id) {
-                    user = {...user, ...newU}
-                    res.status(200).send(user);
-                }
-            });
-            if(arr.length == 0) {
-                res.status(403).send('No user with such ID');
-            }
-        },
+
+  async registerUser(request, response) {
+    // Register the user in the database
+
+    const data = request.body
+    const saltRounds = 10
+
+    const passwordHash = await bcrypt.hash(data.password, saltRounds)
+
+    const user = new User({
+      email: data.email,
+      first_name: data.first_name,
+      last_name: data.last_name,
+      passwordHash,
+    })
+
+    const createdUser = await user.save()
+    console.log(createdUser)
+    response.status(201).json({ message: 'Successfully registered User!' })
+  },
+
+  async loginUser(request, response) {
+    // Login the user with the credentials
+
+    const body = request.body
+    const user = await User.findOne({ email: body.email })
+    const passCorrect = user === null
+      ? false
+      : await bcrypt.compare(body.password, user.passwordHash)
+
+    if(! (user && passCorrect) ){
+      return response.status(401).json({
+        error: 'Invalid email or password!'
+      })
+    }
+    const userForToken = {
+      email: user.email,
+      id: user._id,
+    }
+
+    const token = jwt.sign(userForToken, process.env.SECRET)
+
+    response
+      .status(200)
+      .send({ token, email: user.email, first_name: user.first_name })
+  },
+
+  async getAllUsers(request, response){
+
+    const users = await User.find({})
+    response
+      .status(200)
+      .send(users)
+  }
+
 }
 
-// async function asyncHandler(fn) {
-//     // Because express can't deal with async middleware
-//     return (req, res, next) => {
-//         fn(req, res, next).catch(next);
-//     };
-// }
-//module.exports.function = asyncHandler(function);
 
-module.exports = usersController;
+module.exports = usersController
