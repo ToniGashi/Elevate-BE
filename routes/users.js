@@ -1,28 +1,23 @@
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const userRouter = express.Router()
+var usersController = require('../controllers/usersController.js')
 
-const users = [{id:1, name: 'John', email: 'john@gmail.com'}];
 
-router.get('/', (req, res) => {
-    res.json({ok: true, userList: users});
+
+// Endpoint to register the user
+userRouter.post('/users', (req, res) => {
+  usersController.registerUser(req,res)
 })
 
-router.get('/:id', (req, res) => {
-    const userName = req.params;
-    const requestedUser = users.filter(user => user.id == userName.id)
-    res.json(requestedUser);
+// Endpoint to login the user (retrieve the token)
+userRouter.post('/users/token', (req, res) => {
+  usersController.loginUser(req,res)
 })
 
-router.post('/addUser', (req, res) => {
-    const {name, email} = req.body;
-    console.log(name," and ", email);
-    if(name && email){
-        if(users)
-            users.push({name: name, email: email});
-        res.status(200).send('Request Complete');
-    }
-    else
-        res.status(400).send('All fields are required.');
+// Endpoint to get all the users (retrieve the token)
+userRouter.get('/users', (req, res) => {
+  usersController.getAllUsers(req,res)
 })
 
-module.exports = router;
+
+module.exports = userRouter
