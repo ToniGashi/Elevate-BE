@@ -22,7 +22,7 @@ const usersController = {
 
     const createdUser = await user.save()
     console.log(createdUser)
-    response.status(201).json({ message: 'Successfully registered User!' })
+    response.status(201).json({ message: 'Successfully registered User!', user: createdUser })
   },
 
   async loginUser(request, response) {
@@ -48,7 +48,7 @@ const usersController = {
 
     response
       .status(200)
-      .send({ token, email: user.email, first_name: user.first_name })
+      .send({ token, user: user })
   },
 
   async getAllUsers(request, response){
