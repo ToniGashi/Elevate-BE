@@ -16,6 +16,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 
 const userRouter = require('./routes/users')
+const projectsRouter = require('./routes/projects')
 
 logger.info('conntecting to ', config.MONGODB_URI)
 
@@ -69,6 +70,7 @@ app.use(middleware.requestLogger)
 
 // Make use of the API Endpoints
 app.use('/api/',userRouter)
+app.use('/api/',projectsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)

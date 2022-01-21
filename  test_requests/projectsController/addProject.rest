@@ -1,0 +1,38 @@
+POST http://localhost:5000/api/projects 
+Content-Type: application/json
+
+{
+    "name": "Second Project",
+    "description": "This is the description for the second project and it's longer than the first!",
+    "email": "lazaron@project.com",
+    "contactPerson": "Testim testimi",
+    "interestRate": 0.6,
+    "term": "18 months",
+    "type": "Specialized",
+    "motto": "Think Different",
+    "contactNumber": "+355873452",
+    "raisedMoney": {
+      "amount": 5100,
+      "currency": "EUR"
+    },
+    "preCommittedMoney": {
+      "amount": 2000,
+      "currency": "EUR"
+    },
+    "targetAmountOfMoney": {
+      "amount": 10000,
+      "currency": "EUR"
+    },
+    "valuation": {
+      "amount": 100000,
+      "currency": "EUR"
+    },
+    "sharePrice": {
+      "amount": 12.4,
+      "currency": "EUR"
+    },
+    "tags": [
+      "tech", "green", "innovation"
+    ],
+    "location": "Tirana, Albania"
+}
