@@ -14,7 +14,7 @@ userRouter.post('/users/token', (req, res) => {
   usersController.loginUser(req,res)
 })
 
-// Endpoint to get all the users (retrieve the token)
+// Endpoint to get all the users
 userRouter.get('/users', (req, res) => {
   usersController.getAllUsers(req,res)
 })
