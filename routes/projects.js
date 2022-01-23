@@ -15,6 +15,10 @@ projectsRouter.get('/projects', (req, res) => {
   projectsController.getAllProjects(req,res)
 })
 
+// Endpoint to retrieve single project by id
+projectsRouter.get('/projects/:project_id', (req, res) => {
+  projectsController.retrieveProject(req,res)
+})
 
 
 module.exports = projectsRouter

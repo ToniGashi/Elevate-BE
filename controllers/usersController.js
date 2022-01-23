@@ -8,21 +8,28 @@ const usersController = {
   async registerUser(request, response) {
     // Register the user in the database
 
-    const data = request.body
-    const saltRounds = 10
+    try{
 
-    const passwordHash = await bcrypt.hash(data.password, saltRounds)
 
-    const user = new User({
-      email: data.email,
-      first_name: data.first_name,
-      last_name: data.last_name,
-      passwordHash,
-    })
+      const data = request.body
+      const saltRounds = 10
 
-    const createdUser = await user.save()
-    console.log(createdUser)
-    response.status(201).json({ message: 'Successfully registered User!', user: createdUser })
+      const passwordHash = await bcrypt.hash(data.password, saltRounds)
+
+      const user = new User({
+        email: data.email,
+        first_name: data.first_name,
+        last_name: data.last_name,
+        passwordHash,
+      })
+
+      const createdUser = await user.save()
+      response.status(201).json({ message: 'Successfully registered User!', user: createdUser })
+    }catch(err){
+      response
+        .status(400)
+        .send({ message: 'Bad Request!', err })
+    }
   },
 
   async loginUser(request, response) {
@@ -53,10 +60,42 @@ const usersController = {
 
   async getAllUsers(request, response){
 
-    const users = await User.find({})
-    response
-      .status(200)
-      .send(users)
+    try{
+      const users = await User.find({})
+      response
+        .status(200)
+        .send(users)
+    }catch(err){
+      response
+        .status(400)
+        .send({ message: 'Bad Request!', err })
+    }
+
+  },
+
+  async retrieveUser(request, response){
+
+    try{
+
+      const currentUserID = request.params.user_id
+      const user_object = await User.findById(currentUserID)
+
+      if (!user_object){
+        return response
+          .status(404)
+          .send({ message: 'User not found!' })
+      }
+
+      return response
+        .status(200)
+        .send(user_object)
+
+    }
+    catch(err){
+      response
+        .status(400)
+        .send({ message: 'Bad Request!', err })
+    }
   }
 
 }
