@@ -1,6 +1,6 @@
-const express = require('express');
-const emailRouter = express.Router();
-var emailController = require('../controllers/emailController.js');
+const express = require('express')
+const emailRouter = express.Router()
+var emailController = require('../controllers/emailController.js')
 
 // emailRouter.get('/userToProject', (req, res) => {
 //     console.log("fas");
@@ -14,9 +14,7 @@ var emailController = require('../controllers/emailController.js');
 // })
 
 emailRouter.post('/contact', (req, res) => {
-    console.log(req.body);
-    emailController.contact(req.body);
-    res.status(200).send();
+  emailController.contact(req, res)
 })
 
-module.exports = emailRouter;
+module.exports = emailRouter
