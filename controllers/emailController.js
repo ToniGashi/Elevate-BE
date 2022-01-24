@@ -36,7 +36,7 @@ const emailController = {
     }catch(err){
       return response
         .status(400)
-        .send({ message: 'email not sent!', err })
+        .send({ message: 'email not sent!', email: process.env.NODEMAILER_EMAIL , err })
     }
   }
 
