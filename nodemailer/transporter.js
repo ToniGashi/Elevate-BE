@@ -23,7 +23,7 @@ const accessToken = new Promise((resolve, reject) => {
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { // TODO: google uses this to override sender email
+  auth: {
     type: 'OAuth2',
     user: process.env.GMAIL,
     accessToken,
