@@ -1,8 +1,20 @@
 const transporter = require('../nodemailer/transporter')
 
+function checkRequirements() {
+  if(!process.env.GMAIL)
+    throw 'GMAIL not set in the environment vars.'
+  if(!process.env.GMAIL_CLIENT_ID)
+    throw 'GMAIL_CLIENT_ID not set in the environment vars.'
+  if(!process.env.GMAIL_CLIENT_SECRET)
+    throw 'GMAIL_CLIENT_SECRET not set in the environment vars.'
+  if(!process.env.GMAIL_REFRESH_TOKEN)
+    throw 'GMAIL_REFRESH_TOKEN not set in the environment vars.'
+}
+
 const emailController = {
 
   async inviteUserToProject(receiverEmail, sender, project) {
+    checkRequirements()
     let message = await transporter.sendMail({
       from: `"${sender.firstName} ${sender.lastName} 👻" <${sender.email}>`, // TODO: The senders email won't show because google overwrites it so we may want to switch to hotmail or something
       to: receiverEmail, // list of receivers
@@ -18,28 +30,17 @@ const emailController = {
 
   },
 
-  async contact(request, response) {
-    const reqBody = request.body
+  async contact(reqBody) {
+    checkRequirements()
+    let message = await transporter.sendMail({
+      from: `"GreenFunds 👻" <${process.env.NODEMAILER_EMAIL}>`, // TODO: The senders email won't show because google overwrites it so we may want to switch to hotmail or something
+      to: reqBody.email, // list of receivers
+      subject: 'Message Delivery Works ✔', // Subject line
+      text: `"${reqBody.message}"\nWe have received this message from you. Thank you so much for your inquiry! We will make sure to get to it as soon as possible.`, // plain text body
+    })
 
-    try{
-
-      await transporter.sendMail({
-        from: `"${reqBody.fullName} 👻" <${reqBody.email}>`, // TODO: The senders email won't show because google overwrites it so we may want to switch to hotmail or something
-        to: process.env.NODEMAILER_EMAIL, // list of receivers
-        subject: 'Message Delivery Works ✔', // Subject line
-        text: `${reqBody.message}`, // plain text body
-      })
-
-      return response
-        .status(200)
-        .send({ message: 'success' })
-    }catch(err){
-      return response
-        .status(400)
-        .send({ message: 'email not sent!', email: process.env.NODEMAILER_EMAIL , err })
-    }
+    console.log('Message sent: %s', message.messageId)
   }
-
 }
 
 module.exports = emailController
