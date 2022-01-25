@@ -17,10 +17,7 @@ const mongoose = require('mongoose')
 
 const userRouter = require('./routes/users')
 const emailRouter = require('./routes/emails')
-<<<<<<< HEAD
 const projectsRouter = require('./routes/projects')
-=======
->>>>>>> 34d4eb6 ([GF-27] Initial implementation of email delivery)
 
 logger.info('conntecting to ', config.MONGODB_URI)
 
@@ -75,6 +72,7 @@ app.use(middleware.requestLogger)
 // Make use of the API Endpoints
 app.use('/api/', userRouter)
 app.use('/api/emails', emailRouter)
+app.use('/api/',projectsRouter)
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
