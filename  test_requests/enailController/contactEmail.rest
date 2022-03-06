@@ -1,4 +1,4 @@
-POST https://pure-sea-49895.herokuapp.com/api/emails/contact
+POST localhost:5000/api/emails/contact
 Content-Type: application/json
 
 {

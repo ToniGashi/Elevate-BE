@@ -15,11 +15,14 @@ oauth2Client.setCredentials({
 const accessToken = new Promise((resolve, reject) => {
   oauth2Client.getAccessToken((err, token) => {
     if (err) {
+      console.log(err);
       reject('Failed to create access token :(')
     }
     resolve(token)
   })
 })
+
+accessToken.then((accessToken) => {console.log('[DEBUG]: Gmail access token issued!')}).catch((err) => {console.log('[ERROR]: Can not issue gmail access token: ', err)})
 
 let transporter = nodemailer.createTransport({
   service: 'gmail',

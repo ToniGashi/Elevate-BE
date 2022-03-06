@@ -30,16 +30,22 @@ const emailController = {
 
   },
 
-  async contact(reqBody) {
-    checkRequirements()
-    let message = await transporter.sendMail({
-      from: `"GreenFunds 👻" <${process.env.NODEMAILER_EMAIL}>`, // TODO: The senders email won't show because google overwrites it so we may want to switch to hotmail or something
-      to: reqBody.email, // list of receivers
-      subject: 'Message Delivery Works ✔', // Subject line
-      text: `"${reqBody.message}"\nWe have received this message from you. Thank you so much for your inquiry! We will make sure to get to it as soon as possible.`, // plain text body
-    })
-
-    console.log('Message sent: %s', message.messageId)
+  async contact(request, response) {
+    try {
+      checkRequirements()
+      let message = await transporter.sendMail({
+        from: `"GreenFunds 👻" <${process.env.NODEMAILER_EMAIL}>`, // TODO: The senders email won't show because google overwrites it so we may want to switch to hotmail or something
+        to: request.body.email, // list of receivers
+        subject: 'Message Delivery Works ✔', // Subject line
+        text: `"${request.body.message}"\nWe have received this message from you. Thank you so much for your inquiry! We will make sure to get to it as soon as possible.`, // plain text body
+      })
+      response.status(200).json({ message: 'Successfully sent email!' })
+    } catch(err) {
+      console.log('[ERROR]: ', err);
+      response
+        .status(400)
+        .send({ message: 'Bad Request!', err })
+    }
   }
 }
 
