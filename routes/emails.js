@@ -14,9 +14,7 @@ var emailController = require('../controllers/emailController.js');
 // })
 
 emailRouter.post('/contact', (req, res) => {
-    console.log(req.body);
-    emailController.contact(req.body);
-    res.status(200).send();
+    emailController.contact(req, res);
 })
 
 module.exports = emailRouter;

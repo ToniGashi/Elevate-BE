@@ -23,7 +23,7 @@ logger.info('conntecting to ', config.MONGODB_URI)
 
 mongoose.connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
-    console.log('connected to db')
+    console.log('[DEBUG]: Connected to database!')
   })
   .catch(error => {
     console.log('error connecting to db', error)
