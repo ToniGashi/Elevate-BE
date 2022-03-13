@@ -1,4 +1,4 @@
-POST http://localhost:5000/api/projects 
+POST http://localhost:3000/api/projects 
 Content-Type: application/json
 
 {
@@ -12,15 +12,15 @@ Content-Type: application/json
     "motto": "Think Different",
     "contactNumber": "+355873452",
     "raisedMoney": {
-      "amount": 5100,
+      "amount": 4100,
       "currency": "EUR"
     },
     "preCommittedMoney": {
-      "amount": 2000,
+      "amount": 1000,
       "currency": "EUR"
     },
     "targetAmountOfMoney": {
-      "amount": 10000,
+      "amount": 40000,
       "currency": "EUR"
     },
     "valuation": {
@@ -34,5 +34,7 @@ Content-Type: application/json
     "tags": [
       "tech", "green", "innovation"
     ],
-    "location": "Tirana, Albania"
+    "location": "Tirana, Albania",
+    "goals": "TBA",
+    "industry": "E ndertimit"
 }

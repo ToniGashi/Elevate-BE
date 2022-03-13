@@ -10,7 +10,8 @@ const userSchema = new mongoose.Schema({
     unique:true
   },
   passwordHash: String,
-})
+}
+,{ timestamps: true })
 
 userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
